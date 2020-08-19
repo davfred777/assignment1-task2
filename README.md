@@ -1,3 +1,3 @@
 # assignment1-task2
 
-![1065467](https://user-images.githubusercontent.com/68220442/90600440-2e2ac680-e214-11ea-9f98-8f8a087eee3f.png)
+![78zuou58m](https://user-images.githubusercontent.com/68220442/90601108-48b16f80-e215-11ea-8f29-26f88b432714.jpg)
