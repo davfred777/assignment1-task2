@@ -1,0 +1,217 @@
+<html>
+    <head>
+        <link href="Main.css" rel="stylesheet"/>
+        <script src="jquery-1.10.2.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div id="background">
+            <div id="blackLayer"></div>
+            <img src="ovillo.jpeg"/>
+        </div>
+        <div id="main">
+            <div id="image">
+                <img src="ovillo.jpeg"/>
+            </div>
+            <div id="musicplayer" style="background-color: darkgray; border-radius: 20%;">
+                <div id="songTitle"><b>Demo</b></div>
+                <div id="Title_footer" style="margin-top: -4%;">
+                    <div style="float: left; padding-right: 2%;" ><b>Artist:</b></div><div id="Artist" style="font-family: serif"><i>DEMO</i></div>
+                    <div style="float: left; padding-right: 2%;" ><b>Description:</b></div><div id="Description" style="font-family: serif"><i>demo</i></div>
+                </div>
+                <div id="buttons">
+                    <button id="previous" onclick="pre()"><img src="Pre.png" height="90%" width="90%"/></button>
+                    <button id="play" onclick="playOrPauseSong()"><img src="Play.png"/></button>
+                    <button id="next" onclick="next()"><img src="Next.png" height="90%" width="90%"/></button>
+                </div>
+
+                
+                <div id="seek-bar">
+                    <div id="fill"></div>
+                    <div id="handle"></div>
+                </div><br>
+                <button type="button" class="btn btn-primary" onclick="ran()" style="color:cornsilk; border-color:black; background-color: #c70004; float: left; margin-left: 4%;">shuffle</button>
+                <div class="container">
+                    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo" style="margin-left: 50%;
+                    position: relative; border-color:black; background-color: #c70004;">PlayList</button>
+                    <div id="demo" class="collapse">
+
+                        <table class="table table-hover">
+                            <tbody>
+                              <tr id="l0">
+                                <td style="width: 20%;"><img src="ovillo.jpeg" width="100%" /></td>
+                                <td>O Willow Waly</td>
+                                
+                              </tr>
+                              <tr id="l1">
+                                <td style="width: 20%;"><img src="friends.jpeg" width="100%"/></td>
+                                <td>Friends</td>
+                              </tr>
+                              <tr id="l2">
+                                <td style="width: 20%;"><img src="james.jpeg" width="100%"/></td>
+                                <td>Goodbye-My-Lover</td>
+                              </tr>
+                              <tr id="l3">
+                                <td style="width: 20%;"><img src="hurt-me-tomorrow.jpeg" width="100%"/></td>
+                                <td>Hurt-Me-Tomorrow</td>
+                              </tr>
+                              <tr id="l4">
+                                <td style="width: 20%;" ><img src="GOT.jpeg" width="100%"/></td>
+                                <td>Rains of Castamere</td>
+                              </tr>
+                              <tr id="l5">
+                                <td style="width: 20%;" ><img src="band.jpg" width="100%"/></td>
+                                <td>JUST BAND</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        
+                    </div>
+                  </div>
+            </div>
+        </div>
+        
+    </body>
+    <script type="text/javascript">
+    
+        var songs = ["http://localhost:3000/m/1","http://localhost:3000/m/2","http://localhost:3000/m/3","http://localhost:3000/m/4","http://localhost:3000/m/5",
+		"http://localhost:3000/m/6"];
+		var title = ["O Willow Waly","Friends","Goodbye-my-lover","Hurt-me-tomorrow","Rains of Castamere","BAND"];
+        var poster = ["ovillo.jpeg","friends.jpeg","james.jpeg","hurt-me-tomorrow.jpeg","GOT.jpeg","band.jpg"];
+        var description =["O Willow Waly Song from the Innocents","Friends Song by Anne-Marrie and Marshmellow","James Song","Hurt Me Tommorow Song","House Lannister Theme Song","Just a Band"];
+        var artist = ["Ashley Serena","Anne-Marrie","James","David Hasan","Sigur Ros","David Band"];
+        
+        var songTitle = document.getElementById("songTitle");
+        var fillBar = document.getElementById("fill");
+        var songArtist = document.getElementById("Artist");
+        var SongDescription = document.getElementById("Description");
+        
+        var song = new Audio();
+        var currentSong = 0;    // it point to the current song
+        
+        window.onload = playSong();   // it will call the function playSong when window is load
+        
+        function playSong(){
+            
+            song.src = songs[currentSong];  // set the source of 0th song 
+            
+            songTitle.textContent = title[currentSong]; // set the title of song
+            
+            songArtist.textContent = artist[currentSong]; // set the Artist of song
+
+            SongDescription.textContent = description[currentSong]; // set the Description
+            song.play();    // play the song
+        }
+        
+        function playOrPauseSong(){
+            
+            if(song.paused){
+                song.play();
+                $("#play img").attr("src","Pause.png");  // changing the play image to pause
+            }
+            else{
+                song.pause();
+                $("#play img").attr("src","Play.png");  // changing the pause image to play
+            }
+        }
+        
+        song.addEventListener('timeupdate',function(){ 
+            
+            var position = song.currentTime / song.duration;
+            
+            fillBar.style.width = position * 100 +'%';  // styling the seek-bar
+        });
+        
+    
+        function next(){        // functionality for next button 
+            
+            currentSong++;
+            if(currentSong > 5){
+                currentSong = 0;
+            }
+            playSong();
+            $("#play img").attr("src","Pause.png");
+            $("#image img").attr("src",poster[currentSong]);
+            $("#background img").attr("src",poster[currentSong]);
+        }
+    
+        function pre(){     // functionality for previous button 
+            
+            currentSong--;
+            if(currentSong < 0){
+                currentSong = 5;
+            }
+            playSong();
+            $("#play img").attr("src","Pause.png");
+            $("#image img").attr("src",poster[currentSong]);
+            $("#background img").attr("src",poster[currentSong]);
+        }
+        function ran(){     // using math.random function for choosing random song on clicking shuffle button
+            
+            currentSong =  0 + Math.floor(Math.random() * 6);
+            playSong();
+            $("#play img").attr("src","Pause.png");
+            $("#image img").attr("src",poster[currentSong]);
+            $("#background img").attr("src",poster[currentSong]);
+        }
+
+        $(document).ready(function(){       // giving user an option for selecting a song
+  $("#l0").click(function(){
+      currentSong=0;
+    playSong();
+            $("#play img").attr("src","Pause.png");
+            $("#image img").attr("src",poster[currentSong]);
+            $("#background img").attr("src",poster[currentSong]);
+    
+  });
+  $("#l1").click(function(){
+      currentSong=1;
+    playSong();
+            $("#play img").attr("src","Pause.png");
+            $("#image img").attr("src",poster[currentSong]);
+            $("#background img").attr("src",poster[currentSong]);
+    
+  });
+  $("#l2").click(function(){
+      currentSong=2;
+    playSong();
+            $("#play img").attr("src","Pause.png");
+            $("#image img").attr("src",poster[currentSong]);
+            $("#background img").attr("src",poster[currentSong]);
+    
+  });
+  $("#l3").click(function(){
+      currentSong=3;
+    playSong();
+            $("#play img").attr("src","Pause.png");
+            $("#image img").attr("src",poster[currentSong]);
+            $("#background img").attr("src",poster[currentSong]);
+    
+  });
+  $("#l4").click(function(){
+      currentSong=4;
+    playSong();
+            $("#play img").attr("src","Pause.png");
+            $("#image img").attr("src",poster[currentSong]);
+            $("#background img").attr("src",poster[currentSong]);
+    
+  });
+  $("#l5").click(function(){
+      currentSong=5;
+    playSong();
+            $("#play img").attr("src","Pause.png");
+            $("#image img").attr("src",poster[currentSong]);
+            $("#background img").attr("src",poster[currentSong]);
+    
+  });
+ });
+       
+    
+</script>  
+
+</html>
